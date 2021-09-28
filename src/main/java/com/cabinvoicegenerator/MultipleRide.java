@@ -1,16 +1,30 @@
 package com.cabinvoicegenerator;
 
+import com.cabinvoicegenerator.CabInvoiceGenerator.Ride;
+
 public class MultipleRide {
 	int userId;
 	int distance;
 	int time;
+	Ride type;
 	
-	public MultipleRide(int userId,int distance, int time) {
+	public MultipleRide(int userId,int distance, int time, Ride type) {
 		this.userId = userId;
 		this.distance = distance;
 		this.time = time;
+		this.type = type;
 	}
 	
+
+	public Ride getType() {
+		return type;
+	}
+
+
+	public void setType(Ride type) {
+		this.type = type;
+	}
+
 
 	public int getUserId() {
 		return userId;
