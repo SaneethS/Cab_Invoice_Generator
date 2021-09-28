@@ -11,6 +11,7 @@ import com.cabinvoicegenerator.CabInvoiceGenerator;
 import com.cabinvoicegenerator.Invoice;
 import com.cabinvoicegenerator.MultipleRide;
 import com.cabinvoicegenerator.RideRepository;
+import com.cabinvoicegenerator.CabInvoiceGenerator.Ride;
 
 public class CabInvoiceGeneratorTest {
 	CabInvoiceGenerator cabInvoiceGenerator;
@@ -27,7 +28,7 @@ public class CabInvoiceGeneratorTest {
 	public void fareMatchesExpectedResult() {
 		int distance = 10;
 		double time = 60;
-		double calculateFare = cabInvoiceGenerator.calculateFare(distance,time);
+		double calculateFare = cabInvoiceGenerator.calculateFare(Ride.NORMAL,distance,time);
 		double expectedResult = 160;
 		double epsilon = 1e-15;
 		
@@ -40,8 +41,8 @@ public class CabInvoiceGeneratorTest {
 	@Test
 	public void aggregateFareMatchesExpectedResult() {
 		RideRepository rideRepository = new RideRepository();
-		rideRepository.addRide(new MultipleRide(1,10,60) );
-		rideRepository.addRide(new MultipleRide(1,20,75));
+		rideRepository.addRide(new MultipleRide(1,10,60,Ride.NORMAL) );
+		rideRepository.addRide(new MultipleRide(1,20,75,Ride.NORMAL));
 		double calculateAggregateFare = cabInvoiceGenerator.getAggregateFare(rideRepository.getAllRides());
 		double expectedResult = 435;
 		
@@ -57,8 +58,8 @@ public class CabInvoiceGeneratorTest {
 	@Test
 	public void enchancedInvoiceShouldMatchExpectedResult() {
 		RideRepository rideRepository = new RideRepository();
-		rideRepository.addRide(new MultipleRide(1,10,60) );
-		rideRepository.addRide(new MultipleRide(1,20,75));
+		rideRepository.addRide(new MultipleRide(1,10,60,Ride.NORMAL) );
+		rideRepository.addRide(new MultipleRide(1,20,75,Ride.NORMAL));
 		Invoice invoice = cabInvoiceGenerator.enhancedInvoice(rideRepository.getAllRides());
 		double expectedResultRides = 2;
 		double expectedResultFare = 435;
@@ -77,20 +78,20 @@ public class CabInvoiceGeneratorTest {
 	@Test
 	public void invoiceForMultipleUsersMatchExpectedResult() {
 		RideRepository rideRepository = new RideRepository();
-		rideRepository.addRide(new MultipleRide(1,10,60) );
-		rideRepository.addRide(new MultipleRide(1,20,75));
-		rideRepository.addRide(new MultipleRide(2,11,45) );
-		rideRepository.addRide(new MultipleRide(1,15,50));
-		rideRepository.addRide(new MultipleRide(2,30,80) );
-		rideRepository.addRide(new MultipleRide(1,17,64));
+		rideRepository.addRide(new MultipleRide(1,10,60,Ride.NORMAL) );
+		rideRepository.addRide(new MultipleRide(1,20,75,Ride.PREMIUM));
+		rideRepository.addRide(new MultipleRide(2,11,45,Ride.NORMAL) );
+		rideRepository.addRide(new MultipleRide(1,15,50,Ride.PREMIUM));
+		rideRepository.addRide(new MultipleRide(2,30,80,Ride.PREMIUM) );
+		rideRepository.addRide(new MultipleRide(1,17,64,Ride.NORMAL));
 		
 		//user 1
 		Invoice invoice = cabInvoiceGenerator.enhancedInvoice(rideRepository.getAllRides().stream()
 				.filter(ride -> ride.getUserId()==1).collect(Collectors.toList()));
 		
 		int expectedResultRides = 4;
-		double expectedResultFare = 869;
-		double expectedResultAveg = 217.25;
+		double expectedResultFare = 1169;
+		double expectedResultAveg = 292.25;
 		double epsilon = 1e-15;
 		
 		Assert.assertEquals(expectedResultRides, invoice.getTotalRides(), epsilon);
@@ -102,8 +103,8 @@ public class CabInvoiceGeneratorTest {
 				.filter(ride -> ride.getUserId()==2).collect(Collectors.toList()));
 		
 		expectedResultRides = 2;
-		expectedResultFare = 535;
-		expectedResultAveg = 267.5;
+		expectedResultFare = 765;
+		expectedResultAveg = 382.5;
 		
 		Assert.assertEquals(expectedResultRides, invoice.getTotalRides(), epsilon);
 		Assert.assertEquals(expectedResultFare, invoice.getTotalFares(), epsilon);
