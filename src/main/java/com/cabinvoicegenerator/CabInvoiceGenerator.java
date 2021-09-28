@@ -24,7 +24,7 @@ public class CabInvoiceGenerator {
 	 * @param multipleRide
 	 * @return
 	 */
-	public double getAggregateFare(MultipleRide[] multipleRide) {
+	public double getAggregateFare(List<MultipleRide> multipleRide) {
 		double totalFare = 0;
 		for(MultipleRide ride: multipleRide) {
 			totalFare += calculateFare(ride.getDistance(), ride.getTime());
@@ -37,13 +37,13 @@ public class CabInvoiceGenerator {
 	 * @param multipleRide
 	 * @return
 	 */
-	public Invoice enhancedInvoice(MultipleRide[] multipleRide) {
+	public Invoice enhancedInvoice(List<MultipleRide> multipleRide) {
 		double totalFare = 0;
 		for(MultipleRide ride: multipleRide) {
 			totalFare += calculateFare(ride.getDistance(), ride.getTime());
 		}
 		
-		Invoice invoice = new Invoice(totalFare, multipleRide.length);
+		Invoice invoice = new Invoice(totalFare, multipleRide.size());
 		
 		return invoice;
 	}
