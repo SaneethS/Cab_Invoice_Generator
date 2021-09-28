@@ -16,11 +16,16 @@ public class CabInvoiceGenerator {
 		return cost > MINIMUM_FARE ? cost:MINIMUM_FARE;
 	}
 
+	/**
+	 * method to calculate the aggregate
+	 * @param multipleRide
+	 * @return
+	 */
 	public double getAggregateFare(MultipleRide[] multipleRide) {
 		double totalFare = 0;
 		for(MultipleRide ride: multipleRide) {
 			totalFare += calculateFare(ride.getDistance(), ride.getTime());
 		}
-		return totalFare/multipleRide.length;
+		return totalFare;
 	}
 }

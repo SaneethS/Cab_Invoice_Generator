@@ -29,11 +29,14 @@ public class CabInvoiceGeneratorTest {
 		Assert.assertEquals(expectedResult, calculateFare,epsilon);
 	}
 	
+	/**
+	 * test method to check expected aggregate to be correct
+	 */
 	@Test
 	public void aggregateFareMatchesExpectedResult() {
 		MultipleRide[] multipleRide = {new MultipleRide(10,60), new MultipleRide(20,75)};
 		double calculateAggregateFare = cabInvoiceGenerator.getAggregateFare(multipleRide);
-		double expectedResult = 217.5;
+		double expectedResult = 435;
 		
 		double epsilon = 1e-15;
 		
