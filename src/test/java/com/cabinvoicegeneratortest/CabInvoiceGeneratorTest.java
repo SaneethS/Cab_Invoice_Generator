@@ -1,5 +1,7 @@
 package com.cabinvoicegeneratortest;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,5 +44,23 @@ public class CabInvoiceGeneratorTest {
 		
 		Assert.assertEquals(expectedResult, calculateAggregateFare,epsilon);
 
+	}
+	
+	/**
+	 * test method which is used to check for enchanced invoice
+	 */
+	@Test
+	public void enchancedInvoiceShouldMatchExpectedResult() {
+		MultipleRide[] multipleRide = {new MultipleRide(10,60), new MultipleRide(20,75)};
+		List<Double> enhancedInvoiceResult = cabInvoiceGenerator.enhancedInvoice(multipleRide);
+		double expectedResultRides = 2;
+		double expectedResultFare = 435;
+		double expectedResultAveg = 217.5;
+		
+		double epsilon = 1e-15;
+		
+		Assert.assertEquals(expectedResultRides, enhancedInvoiceResult.get(0), epsilon);
+		Assert.assertEquals(expectedResultFare, enhancedInvoiceResult.get(1), epsilon);
+		Assert.assertEquals(expectedResultAveg, enhancedInvoiceResult.get(2), epsilon);
 	}
 }
