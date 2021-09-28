@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.cabinvoicegenerator.CabInvoiceGenerator;
+import com.cabinvoicegenerator.Invoice;
 import com.cabinvoicegenerator.MultipleRide;
 
 public class CabInvoiceGeneratorTest {
@@ -52,15 +53,15 @@ public class CabInvoiceGeneratorTest {
 	@Test
 	public void enchancedInvoiceShouldMatchExpectedResult() {
 		MultipleRide[] multipleRide = {new MultipleRide(10,60), new MultipleRide(20,75)};
-		List<Double> enhancedInvoiceResult = cabInvoiceGenerator.enhancedInvoice(multipleRide);
+		Invoice invoice = cabInvoiceGenerator.enhancedInvoice(multipleRide);
 		double expectedResultRides = 2;
 		double expectedResultFare = 435;
 		double expectedResultAveg = 217.5;
 		
 		double epsilon = 1e-15;
 		
-		Assert.assertEquals(expectedResultRides, enhancedInvoiceResult.get(0), epsilon);
-		Assert.assertEquals(expectedResultFare, enhancedInvoiceResult.get(1), epsilon);
-		Assert.assertEquals(expectedResultAveg, enhancedInvoiceResult.get(2), epsilon);
+		Assert.assertEquals(expectedResultRides, invoice.getTotalRides(), epsilon);
+		Assert.assertEquals(expectedResultFare, invoice.getTotalFares(), epsilon);
+		Assert.assertEquals(expectedResultAveg, invoice.getAvgFares(), epsilon);
 	}
 }

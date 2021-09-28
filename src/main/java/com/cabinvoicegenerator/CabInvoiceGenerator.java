@@ -37,17 +37,14 @@ public class CabInvoiceGenerator {
 	 * @param multipleRide
 	 * @return
 	 */
-	public List<Double> enhancedInvoice(MultipleRide[] multipleRide) {
-		List<Double> list = new ArrayList<Double>();
+	public Invoice enhancedInvoice(MultipleRide[] multipleRide) {
 		double totalFare = 0;
 		for(MultipleRide ride: multipleRide) {
 			totalFare += calculateFare(ride.getDistance(), ride.getTime());
 		}
 		
-		list.add(Double.valueOf(multipleRide.length));
-		list.add(totalFare);
-		list.add(totalFare/multipleRide.length);
+		Invoice invoice = new Invoice(totalFare, multipleRide.length);
 		
-		return list;
+		return invoice;
 	}
 }
